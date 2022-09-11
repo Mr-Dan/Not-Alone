@@ -1,0 +1,23 @@
+C:\Users\Dan\source\repos\Not Alone\Not Alone\bin\Release\Not Alone.exe.config
+C:\Users\Dan\source\repos\Not Alone\Not Alone\bin\Release\Not Alone.exe
+C:\Users\Dan\source\repos\Not Alone\Not Alone\bin\Release\Not Alone.pdb
+C:\Users\Dan\source\repos\Not Alone\Not Alone\bin\Release\Interop.WMPLib.dll
+C:\Users\Dan\source\repos\Not Alone\Not Alone\bin\Release\AxInterop.WMPLib.dll
+C:\Users\Dan\source\repos\Not Alone\Not Alone\obj\Release\Not Alone.csproj.AssemblyReference.cache
+C:\Users\Dan\source\repos\Not Alone\Not Alone\obj\Release\Interop.WMPLib.dll
+C:\Users\Dan\source\repos\Not Alone\Not Alone\obj\Release\AxInterop.WMPLib.dll
+C:\Users\Dan\source\repos\Not Alone\Not Alone\obj\Release\Not Alone.csproj.ResolveComReference.cache
+C:\Users\Dan\source\repos\Not Alone\Not Alone\obj\Release\Not_Alone.Form1.resources
+C:\Users\Dan\source\repos\Not Alone\Not Alone\obj\Release\Not_Alone.Properties.Resources.resources
+C:\Users\Dan\source\repos\Not Alone\Not Alone\obj\Release\Not Alone.csproj.GenerateResource.cache
+C:\Users\Dan\source\repos\Not Alone\Not Alone\obj\Release\Not Alone.csproj.CoreCompileInputs.cache
+C:\Users\Dan\source\repos\Not Alone\Not Alone\obj\Release\Not Alone.exe
+C:\Users\Dan\source\repos\Not Alone\Not Alone\obj\Release\Not Alone.pdb
+C:\Users\Dan\source\repos\Not Alone\Not Alone\bin\Release\Not Alone.exe.manifest
+C:\Users\Dan\source\repos\Not Alone\Not Alone\bin\Release\Not Alone.application
+C:\Users\Dan\source\repos\Not Alone\Not Alone\bin\Release\Interop.ShockwaveFlashObjects.dll
+C:\Users\Dan\source\repos\Not Alone\Not Alone\bin\Release\AxInterop.ShockwaveFlashObjects.dll
+C:\Users\Dan\source\repos\Not Alone\Not Alone\obj\Release\Interop.ShockwaveFlashObjects.dll
+C:\Users\Dan\source\repos\Not Alone\Not Alone\obj\Release\AxInterop.ShockwaveFlashObjects.dll
+C:\Users\Dan\source\repos\Not Alone\Not Alone\obj\Release\Not Alone.exe.manifest
+C:\Users\Dan\source\repos\Not Alone\Not Alone\obj\Release\Not Alone.application
