@@ -1,0 +1,6 @@
+C:\Users\Dan\source\repos\Not Alone\Not Alone Server\bin\Release\Not Alone Server.exe.config
+C:\Users\Dan\source\repos\Not Alone\Not Alone Server\bin\Release\Not Alone Server.exe
+C:\Users\Dan\source\repos\Not Alone\Not Alone Server\bin\Release\Not Alone Server.pdb
+C:\Users\Dan\source\repos\Not Alone\Not Alone Server\obj\Release\Not Alone Server.csproj.CoreCompileInputs.cache
+C:\Users\Dan\source\repos\Not Alone\Not Alone Server\obj\Release\Not Alone Server.exe
+C:\Users\Dan\source\repos\Not Alone\Not Alone Server\obj\Release\Not Alone Server.pdb

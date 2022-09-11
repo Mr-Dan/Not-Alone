@@ -1,0 +1,10 @@
+C:\Users\Dan\source\repos\Not Alone\Update Not Alone\bin\Debug\Update Not Alone.exe.config
+C:\Users\Dan\source\repos\Not Alone\Update Not Alone\bin\Debug\Update Not Alone.exe
+C:\Users\Dan\source\repos\Not Alone\Update Not Alone\bin\Debug\Update Not Alone.pdb
+C:\Users\Dan\source\repos\Not Alone\Update Not Alone\obj\Debug\Update Not Alone.csproj.AssemblyReference.cache
+C:\Users\Dan\source\repos\Not Alone\Update Not Alone\obj\Debug\Update_Not_Alone.Form1.resources
+C:\Users\Dan\source\repos\Not Alone\Update Not Alone\obj\Debug\Update_Not_Alone.Properties.Resources.resources
+C:\Users\Dan\source\repos\Not Alone\Update Not Alone\obj\Debug\Update Not Alone.csproj.GenerateResource.cache
+C:\Users\Dan\source\repos\Not Alone\Update Not Alone\obj\Debug\Update Not Alone.csproj.CoreCompileInputs.cache
+C:\Users\Dan\source\repos\Not Alone\Update Not Alone\obj\Debug\Update Not Alone.exe
+C:\Users\Dan\source\repos\Not Alone\Update Not Alone\obj\Debug\Update Not Alone.pdb

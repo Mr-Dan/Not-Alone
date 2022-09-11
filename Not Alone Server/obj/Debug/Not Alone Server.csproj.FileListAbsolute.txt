@@ -1,0 +1,7 @@
+C:\Users\Dan\source\repos\Not Alone\Not Alone Server\bin\Debug\Not Alone Server.exe.config
+C:\Users\Dan\source\repos\Not Alone\Not Alone Server\bin\Debug\Not Alone Server.exe
+C:\Users\Dan\source\repos\Not Alone\Not Alone Server\bin\Debug\Not Alone Server.pdb
+C:\Users\Dan\source\repos\Not Alone\Not Alone Server\obj\Debug\Not Alone Server.csproj.AssemblyReference.cache
+C:\Users\Dan\source\repos\Not Alone\Not Alone Server\obj\Debug\Not Alone Server.csproj.CoreCompileInputs.cache
+C:\Users\Dan\source\repos\Not Alone\Not Alone Server\obj\Debug\Not Alone Server.exe
+C:\Users\Dan\source\repos\Not Alone\Not Alone Server\obj\Debug\Not Alone Server.pdb
