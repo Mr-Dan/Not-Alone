@@ -15,7 +15,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using AxWMPLib;
-using Not_Alone_Server.Class;
 using WMPLib;
 
 namespace Not_Alone
@@ -27,8 +26,6 @@ namespace Not_Alone
         bool connectServer = false;
         string dataFromServer = null;
 
-        globalKeyboardHook esc = new globalKeyboardHook();
-        globalKeyboardHook space = new globalKeyboardHook();
         public Form1()
         {
             InitializeComponent();
@@ -275,10 +272,6 @@ namespace Not_Alone
                 MessageBox.Show("Не найден файл Updater.exe. Попробуйте переустановить приложение", "Ошибка");
                 Application.Exit();
             }
-            esc.HookedKeys.Add(Keys.Escape);
-            esc.KeyDown += new KeyEventHandler(gkh_KeyDown);
-            space.HookedKeys.Add(Keys.Space);
-            space.KeyDown += new KeyEventHandler(gkh_KeyDownPouse);
             trackBarSound.Value = WMP.settings.volume;
         }
 

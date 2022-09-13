@@ -4,7 +4,7 @@
   <description asmv2:publisher="Not Alone" asmv2:product="Not Alone" xmlns="urn:schemas-microsoft-com:asm.v1" />
   <application />
   <entryPoint>
-    <assemblyIdentity name="Not Alone" version="1.0.0.1" language="neutral" processorArchitecture="msil" />
+    <assemblyIdentity name="Not Alone" version="1.0.0.2" language="neutral" processorArchitecture="msil" />
     <commandLine file="Not Alone.exe" parameters="" />
   </entryPoint>
   <co.v1:useManifestForTrust xmlns="urn:schemas-microsoft-com:asm.v1" />
@@ -92,14 +92,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Not Alone.exe" size="46480">
-      <assemblyIdentity name="Not Alone" version="1.0.0.1" language="neutral" processorArchitecture="msil" />
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Not Alone.exe" size="43920">
+      <assemblyIdentity name="Not Alone" version="1.0.0.2" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>SQ0GJ2PkI+AuDWoe8kgFIK6LwkVnSQwP9iK3mBhQ96Q=</dsig:DigestValue>
+        <dsig:DigestValue>Fx2XQYt7VGnpM4ADI1uYyTQ29Bz6fA51zEEbNEFNuX8=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
