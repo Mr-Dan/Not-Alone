@@ -4,7 +4,7 @@
   <description asmv2:publisher="Not Alone" asmv2:product="Not Alone" xmlns="urn:schemas-microsoft-com:asm.v1" />
   <application />
   <entryPoint>
-    <assemblyIdentity name="Not Alone" version="1.0.0.1" language="neutral" processorArchitecture="msil" />
+    <assemblyIdentity name="Not Alone" version="1.0.0.2" language="neutral" processorArchitecture="msil" />
     <commandLine file="Not Alone.exe" parameters="" />
   </entryPoint>
   <co.v1:useManifestForTrust xmlns="urn:schemas-microsoft-com:asm.v1" />
@@ -92,24 +92,24 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Not Alone.exe" size="49552">
-      <assemblyIdentity name="Not Alone" version="1.0.0.1" language="neutral" processorArchitecture="msil" />
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Not Alone.exe" size="54672">
+      <assemblyIdentity name="Not Alone" version="1.0.0.2" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>+/BkguQcoFDy97Aunz5uMG7ub9jVxb7z/e9/czeo21I=</dsig:DigestValue>
+        <dsig:DigestValue>PJG5BaLFlP66h600kuNIXesAnysY1wu1n86EuPR7OVI=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
-  <file name="Not Alone.exe.config" size="189">
+  <file name="Not Alone.exe.config" size="1121">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>R+Wg8QGvQVHX8T0ta/qbhH1bXkqY0fRnS3wBV3J0bN8=</dsig:DigestValue>
+      <dsig:DigestValue>F0ZCUAKpLYvK78XT66TOsRB6rfguuc7Pgm3MSJlkAgk=</dsig:DigestValue>
     </hash>
   </file>
 </asmv1:assembly>

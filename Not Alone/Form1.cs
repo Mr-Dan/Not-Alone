@@ -15,6 +15,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using AxWMPLib;
+using Not_Alone_Server.Class;
 using WMPLib;
 
 namespace Not_Alone
@@ -25,13 +26,13 @@ namespace Not_Alone
         NetworkStream serverStream = null;
         bool connectServer = false;
         string dataFromServer = null;
-
+        bool fileExist = false;
         public Form1()
         {
             InitializeComponent();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void Button1_Click(object sender, EventArgs e)
         {
             if (panelSettings.Visible == true)
             {
@@ -42,6 +43,7 @@ namespace Not_Alone
                 panelSettings.Visible = true;
             }
             panelSettings.BringToFront();
+            ActiveControl = null;
         }
 
         private void WMP_PlayStateChange(object sender, _WMPOCXEvents_PlayStateChangeEvent e)
@@ -66,12 +68,12 @@ namespace Not_Alone
                     break;
 
                 case 4:    // ScanForward
-                           // MessageBox.Show("ScanForward");
+                            //MessageBox.Show("ScanForward");
 
                     break;
 
                 case 5:    // ScanReverse
-                    //MessageBox.Show("ScanReverse");
+                   // MessageBox.Show("ScanReverse");
 
                     break;
 
@@ -87,7 +89,9 @@ namespace Not_Alone
 
                 case 8:    // MediaEnded
                     //MessageBox.Show("MediaEnded");
-
+                    WMP.Ctlcontrols.currentPosition = 0;
+                    trackBarMovie.Value =0;
+                    labelTime.Text = $"{0}/{TimetoString(WMP.currentMedia.duration)}";
                     break;
 
                 case 9:    // Transitioning
@@ -102,12 +106,12 @@ namespace Not_Alone
                     break;
 
                 case 11:   // Reconnecting
-                    //MessageBox.Show("Reconnecting");
+                   // MessageBox.Show("Reconnecting");
 
                     break;
 
                 case 12:   // Last
-                           // MessageBox.Show("Last");
+                           //MessageBox.Show("Last");
 
                     break;
 
@@ -125,8 +129,8 @@ namespace Not_Alone
                 if (connectServer == false)
                 {
                     client = new TcpClient();
-                    msg();
-                    client.Connect(IPAddress.Parse(textBoxIp.Text), int.Parse(textBoxPort.Text));
+                    Msg();
+                    client.Connect(IPAddress.Parse(textBoxIp.Text.Trim()), int.Parse(textBoxPort.Text.Trim()));
                     serverStream = client.GetStream();
                     SendMessege("/connect " + textBoxName.Text.Trim());
                     Thread ctThread = new Thread(GetMessage);
@@ -139,11 +143,11 @@ namespace Not_Alone
                 MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK);
             }
         }
-        private void msg()
+        private async void Msg()
         {
             if (InvokeRequired)
             {
-                Invoke(new MethodInvoker(msg));
+                Invoke(new MethodInvoker(Msg));
             }
             else
             {
@@ -155,7 +159,12 @@ namespace Not_Alone
                         string[] clientCommand = dataFromServer.Split();
                         if (clientCommand[0].Equals("/connect"))
                         {
+                            Properties.Settings.Default.Ip = textBoxIp.Text.Trim();
+                            Properties.Settings.Default.Port = textBoxPort.Text.Trim();
+                            Properties.Settings.Default.Name = textBoxName.Text.Trim();
+                            Properties.Settings.Default.Save();
                             connectServer = true;
+                            textBoxLink.Enabled = true;
                             buttonConnect.Text = "Поделиться ссылкой";
                         }
                         else if (clientCommand[0].Equals("/disconnect"))
@@ -167,17 +176,32 @@ namespace Not_Alone
                         else if (clientCommand[0].Equals("/link"))
                         {
                             textBoxLink.Text = clientCommand[1];
-                            WMP.URL = textBoxLink.Text;
+                            if (await OkFileServer(textBoxLink.Text))
+                            {
+                                fileExist = true;
+                                WMP.URL = textBoxLink.Text;
+                            }
+                            else
+                            {
+                                fileExist = false;
+                                MessageBox.Show("Сайт недоступен");
+                            } 
                         }
                         else if (clientCommand[0].Equals("/play"))
                         {
-                            WMP.Ctlcontrols.currentPosition = Convert.ToDouble(clientCommand[1]);
-                            PlayPouseWMP("/play", false);
+                            if (fileExist)
+                            {
+                                WMP.Ctlcontrols.currentPosition = Convert.ToDouble(clientCommand[1]);
+                                PlayPouseWMP("/play", false);
+                            }
                         }
                         else if (clientCommand[0].Equals("/pause"))
                         {
-                            WMP.Ctlcontrols.currentPosition = Convert.ToDouble(clientCommand[1]);
-                            PlayPouseWMP("/pause", false);
+                            if (fileExist)
+                            {
+                                WMP.Ctlcontrols.currentPosition = Convert.ToDouble(clientCommand[1]);
+                                PlayPouseWMP("/pause", false);
+                            }
                         }
 
                     }
@@ -194,9 +218,8 @@ namespace Not_Alone
                     byte[] bytesFrom = new byte[4];
                     serverStream.Read(bytesFrom, 0, 4);
                     string size = Encoding.UTF8.GetString(bytesFrom);
-                    int size_message = 0;
                     int sizeResidue = 0;
-                    if (int.TryParse(size, out size_message))
+                    if (int.TryParse(size, out int size_message))
                     {
 
                         sizeResidue = size_message;
@@ -211,7 +234,7 @@ namespace Not_Alone
                         }
                         dataFromServer = message;
 
-                        msg();
+                        Msg();
                     }
                     if (connectServer == false) break;
                 }
@@ -244,7 +267,7 @@ namespace Not_Alone
 
         }
 
-        private void buttonConnect_Click(object sender, EventArgs e)
+        private async void ButtonConnect_Click(object sender, EventArgs e)
         {
             if (connectServer == false)
             {
@@ -255,13 +278,24 @@ namespace Not_Alone
             {
                 if (textBoxLink.Text.Trim().Length > 0)
                 {
-                    SendMessege("/link " + textBoxLink.Text.Trim());
-                    WMP.URL = textBoxLink.Text;
+                    if (await OkFileServer(textBoxLink.Text))
+                    {
+                        SendMessege("/link " + textBoxLink.Text.Trim());
+                        WMP.URL = textBoxLink.Text;
+                        fileExist = true;
+                    }
+                    else MessageBox.Show("Сайт недоступен");
+
                 }
                 else MessageBox.Show("Ссылка пустая");
 
             }
         }
+
+        GlobalKeyboardHook space = new GlobalKeyboardHook();
+        GlobalKeyboardHook esc = new GlobalKeyboardHook();
+        GlobalKeyboardHook rewind = new GlobalKeyboardHook();
+        GlobalKeyboardHook fastForward = new GlobalKeyboardHook();
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -273,50 +307,89 @@ namespace Not_Alone
                 Application.Exit();
             }
             trackBarSound.Value = WMP.settings.volume;
+
+            space.HookedKeys.Add(Keys.Space);
+            space.KeyDown += new KeyEventHandler(Gkh_KeyDownPouse);
+
+            esc.HookedKeys.Add(Keys.Escape);
+            esc.KeyDown += new KeyEventHandler(Gkh_KeyDownEsc);
+
+            rewind.HookedKeys.Add(Keys.Left);
+            rewind.KeyDown += new KeyEventHandler(Gkh_KeyDownRewind);
+
+            fastForward.HookedKeys.Add(Keys.Right);
+            fastForward.KeyDown += new KeyEventHandler(Gkh_KeyDownFastForward);
+
+            textBoxIp.Text = Properties.Settings.Default.Ip;
+            textBoxPort.Text = Properties.Settings.Default.Port;
+            textBoxName.Text = Properties.Settings.Default.Name;
+
         }
 
-        void gkh_KeyDown(object sender, KeyEventArgs e)
+        void Gkh_KeyDownEsc(object sender, KeyEventArgs e)
         {
             e.Handled = true;
             if (WindowState == FormWindowState.Maximized) WindowState = FormWindowState.Normal;
         }
-        void gkh_KeyDownPouse(object sender, KeyEventArgs e)
+        void Gkh_KeyDownPouse(object sender, KeyEventArgs e)
         {
-            PlayPouseWMP(GetStateWMP(), true);
+            if (activate && connectServer) PlayPouseWMP(GetStateWMP(), true);
+        }
+        void Gkh_KeyDownRewind(object sender, KeyEventArgs e)
+        {
+            if (activate && connectServer) SetCurrentPosition(WMP.Ctlcontrols.currentPosition - 5);
+        }
+        void Gkh_KeyDownFastForward(object sender, KeyEventArgs e)
+        {
+            if (activate && connectServer) SetCurrentPosition(WMP.Ctlcontrols.currentPosition + 5);
         }
 
-        private void buttonPlayPause_Click(object sender, EventArgs e)
+        void SetCurrentPosition(double position)
         {
-            PlayPouseWMP(GetStateWMP(), true);
+            WMP.Ctlcontrols.currentPosition = position;
+            PlayPouseWMP("/play", true);
+            trackBarMovie.Value = Convert.ToInt32(WMP.Ctlcontrols.currentPosition);
+            labelTime.Text = $"{TimetoString(WMP.Ctlcontrols.currentPosition)}/{TimetoString(WMP.currentMedia.duration)}";
+            ActiveControl = null;
+        }
+        private void ButtonPlayPause_Click(object sender, EventArgs e)
+        {
+            if (connectServer && fileExist)
+                PlayPouseWMP(GetStateWMP(), true);
+            ActiveControl = null;
         }
 
         private void PlayPouseWMP(string command, bool me)
         {
-             if (command != null)
-                 if (command.Equals("/play"))
-                 {
-                     if (labelInfo.Visible == true) labelInfo.Visible = false;
-                     if (me) SendMessege("/play " + WMP.Ctlcontrols.currentPosition);
-                     buttonPlayPause.BackgroundImage = Properties.Resources.pouse;
-                     WMP.Ctlcontrols.play();                  
-                     timerMovie.Enabled = true;
-                     trackBarMovie.Maximum = Convert.ToInt32(WMP.currentMedia.duration);
-                     labelTime.Text = $"{TimetoString(WMP.Ctlcontrols.currentPosition)}/{TimetoString(WMP.currentMedia.duration)}";
-                 }
-                 else if (command.Equals("/pause"))
-                 {
-                     if (me) SendMessege("/pause " + WMP.Ctlcontrols.currentPosition);
-                     buttonPlayPause.BackgroundImage = Properties.Resources.play;
-                     WMP.Ctlcontrols.pause();
-                     timerMovie.Enabled = false;
-                 }
+            if (command != null && fileExist)
+                if (command.Equals("/play"))
+                {
+                    if (labelInfo.Visible == true) labelInfo.Visible = false;
+                    if (me) SendMessege("/play " + WMP.Ctlcontrols.currentPosition);
+                    buttonPlayPause.BackgroundImage = Properties.Resources.pouse;
+                    WMP.Ctlcontrols.play();
+                    timerMovie.Enabled = true;
+                    trackBarMovie.Maximum = Convert.ToInt32(WMP.currentMedia.duration);
+                    labelTime.Text = $"{TimetoString(WMP.Ctlcontrols.currentPosition)}/{TimetoString(WMP.currentMedia.duration)}";
+                }
+                else if (command.Equals("/pause"))
+                {
+                    if (me) SendMessege("/pause " + WMP.Ctlcontrols.currentPosition);
+                    buttonPlayPause.BackgroundImage = Properties.Resources.play;
+                    WMP.Ctlcontrols.pause();
+                    timerMovie.Enabled = false;
+                }
+            ActiveControl = null;
         }
 
-        private void timerMovie_Tick(object sender, EventArgs e)
+        private void TimerMovie_Tick(object sender, EventArgs e)
         {
-            trackBarMovie.Maximum = Convert.ToInt32(WMP.currentMedia.duration);
-            trackBarMovie.Value = Convert.ToInt32(WMP.Ctlcontrols.currentPosition);
-            labelTime.Text = $"{TimetoString(WMP.Ctlcontrols.currentPosition)}/{TimetoString(WMP.currentMedia.duration)}";
+            if (fileExist)
+            {
+                trackBarMovie.Maximum = Convert.ToInt32(WMP.currentMedia.duration);
+                trackBarMovie.Value = Convert.ToInt32(WMP.Ctlcontrols.currentPosition);
+                labelTime.Text = $"{TimetoString(WMP.Ctlcontrols.currentPosition)}/{TimetoString(WMP.currentMedia.duration)}";
+            }
         }
 
         private string TimetoString(double time)
@@ -324,43 +397,44 @@ namespace Not_Alone
             int s = Convert.ToInt32(Math.Truncate(time));
             int m = s / 60;
             int h = m / 60;
-            s = s - (m * 60 + h * 3600);
+            s -= (m * 60 + h * 3600);
             return $"{h}:{m}:{s}";
         }
 
-        private void trackBarSound_ValueChanged(object sender, EventArgs e)
+        private void TrackBarSound_ValueChanged(object sender, EventArgs e)
         {
             WMP.settings.volume = trackBarSound.Value;
         }
 
-        private void trackBarMovie_MouseDown(object sender, MouseEventArgs e)
+        private void TrackBarMovie_MouseDown(object sender, MouseEventArgs e)
         {
-            int max = trackBarMovie.Maximum;
-            int width = trackBarMovie.Width - 10;
-            int click = e.Location.X;
-            if (trackBarMovie.Width / 2 > e.Location.X)
+            if (connectServer && fileExist)
             {
-                click -= 5;
+                int max = trackBarMovie.Maximum;
+                int width = trackBarMovie.Width - 10;
+                int click = e.Location.X;
+                if (trackBarMovie.Width / 2 > e.Location.X)
+                {
+                    click -= 5;
+                }
+                else if (trackBarMovie.Width / 2 < e.Location.X)
+                {
+                    click += 5;
+                }
+                SetCurrentPosition((click * max) / width);
             }
-            else if (trackBarMovie.Width / 2 < e.Location.X)
-            {
-                click += 5;
-            }
-            WMP.Ctlcontrols.currentPosition = (click * max) / width;
-            PlayPouseWMP("/play", true);
-            trackBarMovie.Value = Convert.ToInt32(WMP.Ctlcontrols.currentPosition);
-            labelTime.Text = $"{TimetoString(WMP.Ctlcontrols.currentPosition)}/{TimetoString(WMP.currentMedia.duration)}";
         }
 
-        private void trackBarSound_MouseDown(object sender, MouseEventArgs e)
+        private void TrackBarSound_MouseDown(object sender, MouseEventArgs e)
         {
             int max = trackBarSound.Maximum;
             int width = trackBarSound.Width;
             int click = e.Location.X;
             trackBarSound.Value = (click * max) / width;
+            ActiveControl = null;
         }
 
-        private void buttonClose_Click(object sender, EventArgs e)
+        private void ButtonClose_Click(object sender, EventArgs e)
         {
             if (connectServer == true)
             {
@@ -370,9 +444,10 @@ namespace Not_Alone
             Application.Exit();
         }
 
-        private void buttonMin_Click(object sender, EventArgs e)
+        private void ButtonMin_Click(object sender, EventArgs e)
         {
             WindowState = FormWindowState.Minimized;
+            ActiveControl = null;
         }
 
         #region перемещяем форму по зажатой мышки
@@ -392,7 +467,7 @@ namespace Not_Alone
                 SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
             }
         }
-        private void panelTitle_MouseDown(object sender, MouseEventArgs e)
+        private void PanelTitle_MouseDown(object sender, MouseEventArgs e)
         {
             MoveForm(e);
         }
@@ -404,7 +479,7 @@ namespace Not_Alone
             PlayPouseWMP(GetStateWMP(), true);
         }
 
-        private void buttonScreen_Click(object sender, EventArgs e)
+        private void ButtonScreen_Click(object sender, EventArgs e)
         {
             if (WindowState == FormWindowState.Normal)
             {
@@ -416,11 +491,12 @@ namespace Not_Alone
                 WindowState = FormWindowState.Normal;
                 buttonScreen.BackgroundImage = Properties.Resources.fullScreen;
             }
+            ActiveControl = null;
         }
 
         private string GetStateWMP()
         {
-            if (WMP.playState == WMPPlayState.wmppsPaused || WMP.playState == WMPPlayState.wmppsReady || WMP.playState == WMPPlayState.wmppsStopped)
+            if (WMP.playState == WMPPlayState.wmppsPaused || WMP.playState == WMPPlayState.wmppsReady || WMP.playState == WMPPlayState.wmppsStopped || WMP.playState == WMPPlayState.wmppsMediaEnded)
             {
                 return "/play";
             }
@@ -488,15 +564,53 @@ namespace Not_Alone
             return text.Substring(start + type.Length + 1, end - start - type.Length - 1);
         }
 
-        private void textBoxLink_TextChanged(object sender, EventArgs e)
+        private void TextBoxLink_TextChanged(object sender, EventArgs e)
         {
-            if(textBoxLink.Text.Length >0 && connectServer== true)
-            if(Regex.IsMatch(textBoxLink.Text, @"(http:\/\/\S*)((.mp4)|(.mp3)|(.wav)|(.3gp)|(.avi)|(.mov)|(.flv)|(.wmv)|(.mpg))$") ==false)
+            if (textBoxLink.Text.Length > 0 && connectServer == true)
+                if (Regex.IsMatch(textBoxLink.Text.Trim(), @"(http:\/\/\S*)((.mp4)|(.mp3)|(.wav)|(.3gp)|(.avi)|(.mov)|(.flv)|(.wmv)|(.mpg))$") == false)
+                {
+                    textBoxLink.Text = "";
+                    MessageBox.Show("Неправильная ссылка");
+                }
+        }
+
+        bool activate = true;
+        private void Form1_Deactivate(object sender, EventArgs e)
+        {
+            activate = false;
+        }
+
+        private void Form1_Activated(object sender, EventArgs e)
+        {
+            activate = true;
+        }
+        private async Task< bool> OkFileServer(string link)
+        {
+            try
             {
-                textBoxLink.Text = "";
-                MessageBox.Show("Неправильная ссылка");
+                buttonConnect.Enabled = false;
+                buttonConnect.Text = "Подключение к файлу...";
+                WebRequest request = WebRequest.Create(link);
+                HttpWebResponse response =  (HttpWebResponse)await request.GetResponseAsync();
+                if (response == null || response.StatusCode != HttpStatusCode.OK)
+                {
+                    buttonConnect.Enabled = true;
+                    buttonConnect.Text = "Поделиться";
+                    return false;
+                }
+                response.Close();
+                buttonConnect.Enabled = true;
+                buttonConnect.Text = "Поделиться";
+                return true;
+            }
+            catch
+            {
+                buttonConnect.Enabled = true;
+                buttonConnect.Text = "Поделиться";
+                return false;
             }
         }
     }
 
 }
+  

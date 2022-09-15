@@ -88,13 +88,13 @@ namespace Not_Alone
             // 
             // buttonConnect
             // 
-            this.buttonConnect.Location = new System.Drawing.Point(40, 168);
+            this.buttonConnect.Location = new System.Drawing.Point(3, 168);
             this.buttonConnect.Name = "buttonConnect";
-            this.buttonConnect.Size = new System.Drawing.Size(116, 23);
+            this.buttonConnect.Size = new System.Drawing.Size(194, 23);
             this.buttonConnect.TabIndex = 8;
             this.buttonConnect.Text = "Подключиться";
             this.buttonConnect.UseVisualStyleBackColor = true;
-            this.buttonConnect.Click += new System.EventHandler(this.buttonConnect_Click);
+            this.buttonConnect.Click += new System.EventHandler(this.ButtonConnect_Click);
             // 
             // label4
             // 
@@ -108,12 +108,13 @@ namespace Not_Alone
             // 
             // textBoxLink
             // 
+            this.textBoxLink.Enabled = false;
             this.textBoxLink.Location = new System.Drawing.Point(3, 129);
             this.textBoxLink.Multiline = true;
             this.textBoxLink.Name = "textBoxLink";
             this.textBoxLink.Size = new System.Drawing.Size(177, 21);
             this.textBoxLink.TabIndex = 6;
-            this.textBoxLink.TextChanged += new System.EventHandler(this.textBoxLink_TextChanged);
+            this.textBoxLink.TextChanged += new System.EventHandler(this.TextBoxLink_TextChanged);
             // 
             // label3
             // 
@@ -203,7 +204,7 @@ namespace Not_Alone
             this.trackBarMovie.TabIndex = 27;
             this.trackBarMovie.TabStop = false;
             this.trackBarMovie.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.trackBarMovie.MouseDown += new System.Windows.Forms.MouseEventHandler(this.trackBarMovie_MouseDown);
+            this.trackBarMovie.MouseDown += new System.Windows.Forms.MouseEventHandler(this.TrackBarMovie_MouseDown);
             // 
             // labelTime
             // 
@@ -234,7 +235,7 @@ namespace Not_Alone
             this.buttonScreen.TabIndex = 27;
             this.buttonScreen.TabStop = false;
             this.buttonScreen.UseVisualStyleBackColor = false;
-            this.buttonScreen.Click += new System.EventHandler(this.buttonScreen_Click);
+            this.buttonScreen.Click += new System.EventHandler(this.ButtonScreen_Click);
             // 
             // panelSound
             // 
@@ -258,8 +259,8 @@ namespace Not_Alone
             this.trackBarSound.TabIndex = 27;
             this.trackBarSound.TabStop = false;
             this.trackBarSound.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.trackBarSound.ValueChanged += new System.EventHandler(this.trackBarSound_ValueChanged);
-            this.trackBarSound.MouseDown += new System.Windows.Forms.MouseEventHandler(this.trackBarSound_MouseDown);
+            this.trackBarSound.ValueChanged += new System.EventHandler(this.TrackBarSound_ValueChanged);
+            this.trackBarSound.MouseDown += new System.Windows.Forms.MouseEventHandler(this.TrackBarSound_MouseDown);
             // 
             // buttonSound
             // 
@@ -294,7 +295,7 @@ namespace Not_Alone
             this.buttonSettings.TabIndex = 26;
             this.buttonSettings.TabStop = false;
             this.buttonSettings.UseVisualStyleBackColor = false;
-            this.buttonSettings.Click += new System.EventHandler(this.button1_Click);
+            this.buttonSettings.Click += new System.EventHandler(this.Button1_Click);
             // 
             // buttonPlayPause
             // 
@@ -312,7 +313,7 @@ namespace Not_Alone
             this.buttonPlayPause.TabIndex = 22;
             this.buttonPlayPause.TabStop = false;
             this.buttonPlayPause.UseVisualStyleBackColor = false;
-            this.buttonPlayPause.Click += new System.EventHandler(this.buttonPlayPause_Click);
+            this.buttonPlayPause.Click += new System.EventHandler(this.ButtonPlayPause_Click);
             // 
             // panelTitle
             // 
@@ -324,7 +325,7 @@ namespace Not_Alone
             this.panelTitle.Name = "panelTitle";
             this.panelTitle.Size = new System.Drawing.Size(800, 25);
             this.panelTitle.TabIndex = 6;
-            this.panelTitle.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panelTitle_MouseDown);
+            this.panelTitle.MouseDown += new System.Windows.Forms.MouseEventHandler(this.PanelTitle_MouseDown);
             // 
             // buttonMin
             // 
@@ -342,7 +343,7 @@ namespace Not_Alone
             this.buttonMin.TabIndex = 21;
             this.buttonMin.TabStop = false;
             this.buttonMin.UseVisualStyleBackColor = false;
-            this.buttonMin.Click += new System.EventHandler(this.buttonMin_Click);
+            this.buttonMin.Click += new System.EventHandler(this.ButtonMin_Click);
             // 
             // buttonClose
             // 
@@ -360,7 +361,7 @@ namespace Not_Alone
             this.buttonClose.TabIndex = 20;
             this.buttonClose.TabStop = false;
             this.buttonClose.UseVisualStyleBackColor = false;
-            this.buttonClose.Click += new System.EventHandler(this.buttonClose_Click);
+            this.buttonClose.Click += new System.EventHandler(this.ButtonClose_Click);
             // 
             // panelWMP
             // 
@@ -401,7 +402,7 @@ namespace Not_Alone
             // timerMovie
             // 
             this.timerMovie.Interval = 1000;
-            this.timerMovie.Tick += new System.EventHandler(this.timerMovie_Tick);
+            this.timerMovie.Tick += new System.EventHandler(this.TimerMovie_Tick);
             // 
             // Form1
             // 
@@ -414,6 +415,8 @@ namespace Not_Alone
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "Form1";
             this.Text = "Not Alone";
+            this.Activated += new System.EventHandler(this.Form1_Activated);
+            this.Deactivate += new System.EventHandler(this.Form1_Deactivate);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.panelSettings.ResumeLayout(false);
