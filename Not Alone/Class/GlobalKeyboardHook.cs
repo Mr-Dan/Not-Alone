@@ -5,15 +5,15 @@ using System.Windows.Forms;
 
 namespace Not_Alone_Server.Class
 {//Не мое =D
-    class GlobalKeyboardHook
+    class globalKeyboardHook
     {
 		#region Constant, Structure and Delegate Definitions
 		/// <summary>
 		/// defines the callback type for the hook
 		/// </summary>
-		public delegate int keyboardHookProc(int code, int wParam, ref KeyboardHookStruct lParam);
+		public delegate int keyboardHookProc(int code, int wParam, ref keyboardHookStruct lParam);
 
-		public struct KeyboardHookStruct
+		public struct keyboardHookStruct
 		{
 			public int vkCode;
 			public int scanCode;
@@ -55,21 +55,21 @@ namespace Not_Alone_Server.Class
 
 		#region Constructors and Destructors
 		/// <summary>
-		/// Initializes a new instance of the <see cref="GlobalKeyboardHook"/> class and installs the keyboard hook.
+		/// Initializes a new instance of the <see cref="globalKeyboardHook"/> class and installs the keyboard hook.
 		/// </summary>
-		public GlobalKeyboardHook()
+		public globalKeyboardHook()
 		{
-			hookProcDelegate = HookProc;
-			Hook();
+			hookProcDelegate = hookProc;
+			hook();
 		}
 
 		/// <summary>
 		/// Releases unmanaged resources and performs other cleanup operations before the
-		/// <see cref="GlobalKeyboardHook"/> is reclaimed by garbage collection and uninstalls the keyboard hook.
+		/// <see cref="globalKeyboardHook"/> is reclaimed by garbage collection and uninstalls the keyboard hook.
 		/// </summary>
-		~GlobalKeyboardHook()
+		~globalKeyboardHook()
 		{
-			Unhook();
+			unhook();
 		}
 		#endregion
 
@@ -77,7 +77,7 @@ namespace Not_Alone_Server.Class
 		/// <summary>
 		/// Installs the global hook
 		/// </summary>
-		public void Hook()
+		public void hook()
 		{
 			IntPtr hInstance = LoadLibrary("User32");
 			hhook = SetWindowsHookEx(WH_KEYBOARD_LL, hookProcDelegate, hInstance, 0);
@@ -87,7 +87,7 @@ namespace Not_Alone_Server.Class
 		/// <summary>
 		/// Uninstalls the global hook
 		/// </summary>
-		public void Unhook()
+		public void unhook()
 		{
 			UnhookWindowsHookEx(hhook);
 		}
@@ -99,7 +99,7 @@ namespace Not_Alone_Server.Class
 		/// <param name="wParam">The event type</param>
 		/// <param name="lParam">The keyhook event information</param>
 		/// <returns></returns>
-		public int HookProc(int code, int wParam, ref KeyboardHookStruct lParam)
+		public int hookProc(int code, int wParam, ref keyboardHookStruct lParam)
 		{
 			if (code >= 0)
 			{
@@ -152,7 +152,7 @@ namespace Not_Alone_Server.Class
 		/// <param name="lParam">The lparam.</param>
 		/// <returns></returns>
 		[DllImport("user32.dll")]
-		static extern int CallNextHookEx(IntPtr idHook, int nCode, int wParam, ref KeyboardHookStruct lParam);
+		static extern int CallNextHookEx(IntPtr idHook, int nCode, int wParam, ref keyboardHookStruct lParam);
 
 		/// <summary>
 		/// Loads the library.
